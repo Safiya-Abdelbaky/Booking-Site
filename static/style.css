@@ -1,0 +1,210 @@
+body {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, Sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #2c5033;
+    background-color: #F9FAFB;
+
+    background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+    background-size: 26px 26px;
+    
+}
+
+.top-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 15px 40px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-bottom: 1px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+
+}
+
+.nav-brand img {
+    width: 160px;
+    filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.05));
+
+}
+
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.user-greeting {
+    font-weight: 600;
+    color: #1B4332;
+    font-size: 16px;
+}
+
+.gradient-text {
+    background: #1B4332; 
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    margin-bottom: 5px;
+    font-size: 38px;
+    font-weight: 800;
+}
+
+
+.header-section {
+    text-align: center;
+    margin: 40px 0;
+}
+
+
+
+.auth-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+
+.flex-btn {
+    flex: 1; 
+    padding: 14px 0;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background: #1B4332; 
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+
+.btn-primary:hover {
+    background: #081C15;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(27, 67, 50, 0.3);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #1B4332;
+    border: 2px solid #1B4332;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background: #1B4332;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-outline-danger {
+    background: transparent;
+    color: #e74c3c;
+    border: 1.5px solid #e74c3c;
+    padding: 8px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+    background: #e74c3c;
+    color: white;
+}
+
+.full-page-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto 50px auto; 
+    padding: 0 20px;
+}
+
+.form-input {
+    padding: 14px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background: #ffffff;
+    transition: border-color 0.3s;
+}
+
+.form-input:focus {
+    border-color: #1B4332; 
+    outline: none;
+}
+
+
+.hidden-section {
+    display: none !important;
+
+}
+
+
+.center-content {
+    text-align: center;
+
+}
+
+.subtitle-text {
+    color: #64748b;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.login-wrapper {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.login-card {
+    padding: 40px;
+
+}
+
+.form-label {
+    color: #1B4332;
+    text-align: left;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+
+}
+
+.full-width {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.error-msg {
+    background: rgba(231, 76, 60, 0.1);
+    color: #c0392b;
+    border-left: 4px solid #e74c3c;
+    padding: 12px;
+    margin-bottom: 20px;
+    text-align: left;
+    border-radius: 4px;
+
+}

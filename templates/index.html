@@ -31,11 +31,11 @@
             </div>
 
             <div id="login-section" class="login-wrapper">
-                { % if error % }
+                {% if error %}
                    <div class="error-msg">
                    {{error}}
                    </div>
-                { % endif % }
+                {% endif %}
 
                 <div class="room-booking-card login-card">
                     <form method="POST" action="/login" id="login-form">
