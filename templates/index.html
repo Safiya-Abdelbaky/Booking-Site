@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>BookingWorkspace - Welcome</title>
+        <link rel="stylesheet" href="/static/style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+
+    </head>
+    <body>
+
+        <nav class="top-navbar">
+            <div class="nav-brand">
+                <img src="https://remotecoders.org/_next/image?url=%2Frc-logo.webp&w=750&q=75" alt="Corporate Logo">
+            </div>
+
+            <div class="nav-user hidden-section" id="navbar-user-section">
+                <span class="user-greeting">Welcome!</span>
+                <button id="logout-btn" class="btn-outline-danger">Logout</button>
+
+            </div>
+        </nav>
+
+
+        <div class="full-page-container center-content">
+            <div class="header-section">
+                <h1 class="gradient-text">Corporate Workspace</h1>
+                <p class="subtitle-text">Premium environment for remote coders and professionals</p>
+            </div>
+
+            <div id="login-section" class="login-wrapper">
+                { % if error % }
+                   <div class="error-msg">
+                   {{error}}
+                   </div>
+                { % endif % }
+
+                <div class="room-booking-card login-card">
+                    <form method="POST" action="/login" id="login-form">
+                        <label for="username" class="form-label">Username:</label>
+                        <input type="text" id="username" name="username" placeholder="Enter your username" required class="form-input full-width">
+
+                        <label for="password" class="form-label">Password:</label>
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required class="form-input full-width">
+
+                        <div class="auth-buttons">
+                            <button type="submit" name="action" value="signin" class="btn-primary flex-btn">Sign In</button>
+                            <button type="submit" name="action" value="signup" class="btn-primary flex-btn">Sign UP</button>
+
+                        </div>
+                    </form>
+                </div>  
+            </div>
+
+
+            <div id="authorized-menu" class="hidden-section">
+                <div class="room-grid">
+
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+
+
+
+
+    </body>
+</html>
