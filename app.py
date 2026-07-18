@@ -50,7 +50,39 @@ class workspace:
                 return True
         return False
     
+    
 manager=workspace("bookings.json","users.json")
+
+# --- Time Validation Algorithms ---
+
+def is_time_overlap(req_start, req_end, booked_time_str):
+    try:
+        book_start, book_end = booked_time_str.split(' - ')
+        fmt = "%I:%M %p"
+        rs = datetime.strptime(req_start, fmt)
+        re = datetime.strptime(req_end, fmt)
+        bs = datetime.strptime(book_start, fmt)
+        be = datetime.strptime(book_end, fmt)
+        
+        if rs >= re:
+            return True 
+            
+        return max(rs, bs) < min(re, be)
+    except Exception:
+        return True 
+
+def is_past_time(req_date, req_start):
+    try:
+        fmt = "%Y-%m-%d %I:%M %p"
+        req_datetime_str = f"{req_date} {req_start}"
+        req_dt = datetime.strptime(req_datetime_str, fmt)
+        return req_dt < datetime.now()
+    except Exception:
+        return True 
+    
+
+
+# --- Routes ---    
 
 @app.route('/')
 def home():
@@ -74,7 +106,56 @@ def login():
         if manager.authenticate_user(username,password):
             return render_template('index.html',success_login=True,user_name=username)
         else:
-            return render_template('index.html',error="Invalid credentials")    
+            return render_template('index.html',error="Invalid credentials") 
+
+
+@app.route('/rooms',methods=['GET', 'POST'])
+def rooms():
+    all_rooms = [
+        {"name": "CAIRO ", "type": "Private"},
+        {"name": "SANAA ", "type": "Open Air"},
+        {"name": "ASMARA ", "type": "Coworker"},
+        {"name": "KHARTOUM ", "type": "Coworker"}
+        ]
+    if request.method == 'POST':
+        search_date = request.form.get('date')
+        start_time = request.form.get('start_time')
+        end_time = request.form.get('room_type_filter')
+        room_type_filter = request.form.get('room_type_filter')
+
+        if not search_date or not start_time or not end_time:
+            return render_template('rooms.html', error="Please select valid date and times", search_active=False) 
+         # Server-side check: Prevent searching for past times
+        if is_past_time(search_date, start_time):
+            return render_template('rooms.html', error="Cannot book a time slot in the past. Please select a future time.", search_active=False) 
+        bookings = manager.get_bookings()
+        available_rooms = []
+
+
+        for room in all_rooms:
+            if room_type_filter != "All" and room['type'] != room_type_filter:
+                continue
+                
+            is_booked = False
+            for b in bookings:
+                if b['room'] == room['name'] and b['date'] == search_date:
+                    if is_time_overlap(start_time, end_time, b['time']):
+                        is_booked = True
+                        break 
+            
+            if not is_booked:
+                available_rooms.append(room)
+
+        return render_template('rooms.html', 
+                               rooms=available_rooms, 
+                               search_active=True,
+                               s_date=search_date,
+                               s_start=start_time,
+                               s_end=end_time)
+
+    return render_template('rooms.html', search_active=False)
+        
+
 
 if __name__ == '__main__':
     app.run(debug=True)
