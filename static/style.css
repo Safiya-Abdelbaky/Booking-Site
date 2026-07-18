@@ -233,3 +233,128 @@ body {
     box-shadow: 0 15px 30px rgba(27, 67, 50, 0.15);
     border-color: #1B4332;
 }
+
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #f4f7f6;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.card-header h3 {
+    margin: 0;
+    color: #1B4332;
+    font-size: 22px;
+}
+
+.badge {
+    background-color: #D8F3DC;
+    color: #1B4332;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.room-booking-card .form-group {
+    margin-bottom: 20px;
+}
+
+.room-booking-card label {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #4a5568;
+    text-align: left;
+}
+
+.room-booking-card .form-input {
+    width: 100%;
+    margin-bottom: 0; 
+}
+
+/* ==========================================================================
+   Horizontal Search Bar (Google Calendar Style)
+   ========================================================================== */
+.search-bar-container {
+    background: white;
+    border-radius: 50px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    padding: 10px 10px 10px 30px;
+    margin: 0 auto 50px auto;
+    border: 1px solid #e2e8f0;
+}
+
+.horizontal-search-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.search-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #e0e0e0;
+    padding-right: 15px;
+}
+
+.search-field:last-of-type {
+    border-right: none; 
+}
+
+.search-field label {
+    font-size: 11px;
+    font-weight: bold;
+    color: #1B4332;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.search-field input, .search-field select {
+    border: none;
+    outline: none;
+    font-size: 15px;
+    color: #333;
+    background: transparent;
+    padding: 5px 0;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.search-btn-container {
+    flex: 0.8;
+}
+
+.selected-time-display {
+    background: #FDFBF7;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+/* ==========================================================================
+   Data Presentation Tables
+   ========================================================================== */
+.theme-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.theme-table th {
+    background-color: #1B4332; 
+    color: #FDFBF7; 
+    padding: 15px;
+    text-align: left;
+}
+
+.theme-table td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}

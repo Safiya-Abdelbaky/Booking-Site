@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Available Workspaces</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="cream-theme">
+    
+    <div class="full-page-container">
+        
+        <div class="header-section">
+            <h1 class="gradient-text">Find Your Perfect Workspace</h1>
+            <p style="color: #555; font-size: 18px;">Select your desired time to instantly see available rooms.</p>
+        </div>
+
+        <div class="search-bar-container" style="max-width: 800px;">
+            <form method="POST" action="/rooms" class="horizontal-search-bar">
+                
+                <input type="hidden" name="room_type_filter" id="hidden_space_type_filter" value="All">
+
+                <div class="search-field">
+                    <label>Date</label>
+                    <input type="date" name="date" required>
+                </div>
+                
+                <div class="search-field">
+                    <label>From</label>
+                    <select name="start_time" id="start_time_select" required>
+                        <option value="08:00 AM">08:00 AM</option>
+                        <option value="09:00 AM">09:00 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="12:00 PM">12:00 PM</option>
+                        <option value="01:00 PM">01:00 PM</option>
+                        <option value="02:00 PM">02:00 PM</option>
+                        <option value="03:00 PM">03:00 PM</option>
+                    </select>
+                </div>
+
+                <div class="search-field">
+                    <label>To</label>
+                    <select name="end_time" id="end_time_select" required>
+                        <option value="09:00 AM">09:00 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="12:00 PM">12:00 PM</option>
+                        <option value="01:00 PM">01:00 PM</option>
+                        <option value="02:00 PM">02:00 PM</option>
+                        <option value="03:00 PM">03:00 PM</option>
+                        <option value="04:00 PM">04:00 PM</option>
+                    </select>
+                </div>
+
+                <div class="search-btn-container">
+                    <button type="submit" class="btn-primary" style="width: 100%; border-radius: 50px;">Check Availability</button>
+                </div>
+
+            </form>
+        </div>
+
+        {% if search_active %}
+            <div class="room-grid">
+                {% for room in rooms %}
+                <div class="room-booking-card">
+                    <div class="card-header">
+                        <h3>{{ room.name }}</h3>
+                        <span class="badge">{{ room.type }}</span>
+                    </div>
+
+                    <div class="selected-time-display">
+                        <p style="margin: 0; color: #555; font-weight: bold;">📅 {{ s_date }}</p>
+                        <p style="margin: 5px 0 0 0; color: #555;">⏱️ {{ s_start }} to {{ s_end }}</p>
+                    </div>
+
+                    <form action="/book" method="POST">
+                        <input type="hidden" name="client_name" class="auto-client-name">
+                        <input type="hidden" name="room_type" value="{{ room.name }}">
+                        <input type="hidden" name="date" value="{{ s_date }}">
+                        <input type="hidden" name="time_slot" value="{{ s_start }} - {{ s_end }}">
+                        
+                        <button type="submit" class="btn-theme-green" style="width: 100%; margin-top: 15px;">Book This Room</button>
+                    </form>
+                </div>
+                {% else %}
+                <div style="grid-column: 1 / -1; text-align: center; padding: 40px; background: white; border-radius: 12px; border: 1px dashed #ccc;">
+                    <h3 style="color: #e74c3c;">No rooms available for the selected parameters.</h3>
+                    <p style="color: #555;">Please adjust your time slot or try a different room category.</p>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div style="text-align: center; margin-top: 80px;">
+                <h3 style="color: #aaa; font-weight: normal;">Search for your specified block above to view available slots.</h3>
+            </div>
+        {% endif %}
+
+        <div style="text-align: center; margin-top: 60px;">
+            <a href="/" class="link-secondary" style="font-weight: bold;">← Back to Home</a>
+            <span style="margin: 0 15px; color: #ccc;">|</span>
+            <a href="#" class="link-secondary dashboard-link" style="font-weight: bold;">Go to My Dashboard →</a>
+        </div>
+
+    </div>
+    <script src="/static/script.js"></script>
+    <script>
+        // Pull stored workspace type preference and assign it to our hidden input field
+        const storedSpaceType = localStorage.getItem('selectedSpaceType') || 'All';
+        const hiddenFilterInput = document.getElementById('hidden_space_type_filter');
+        if (hiddenFilterInput) {
+            hiddenFilterInput.value = storedSpaceType;
+        }
+
+        // Standard timing checks to prevent backward selection ranges
+        const startSelect = document.getElementById('start_time_select');
+        const endSelect = document.getElementById('end_time_select');
+
+        if (startSelect && endSelect) {
+            startSelect.addEventListener('change', function() {
+                const startIndex = this.selectedIndex;
+                
+                Array.from(endSelect.options).forEach((opt, index) => {
+                    if (index < startIndex) {
+                        opt.disabled = true;
+                        opt.style.display = 'none';
+                    } else {
+                        opt.disabled = false;
+                        opt.style.display = 'block';
+                    }
+                });
+                
+                if (endSelect.selectedIndex < startIndex) {
+                    endSelect.selectedIndex = startIndex + 1;
+                }
+            });
+            startSelect.dispatchEvent(new Event('change'));
+        }
+    </script>
+</body>
+</html>
