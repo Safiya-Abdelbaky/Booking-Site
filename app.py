@@ -14,6 +14,7 @@ class workspace:
         self._initialize_files()
 
 
+
     def _intialize_files(self):
         for file_path in [self.bookings_file, self.users_file]:
             if not os.path.exists(file_path):
