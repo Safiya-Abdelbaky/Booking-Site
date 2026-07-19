@@ -7,6 +7,7 @@ body {
     background-color: #F9FAFB;
     background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
     background-size: 26px 26px;
+    
 }
 
 /*Navigation Bar */
@@ -54,7 +55,7 @@ body {
 
 .header-section {
     text-align: center;
-    margin: 40px 0;
+    margin: 20px 0;
 }
 
 .subtitle-text {
@@ -205,8 +206,8 @@ body {
 .room-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px; 
-    margin-top: 30px;
+    gap: 55px; 
+    margin-top: 70px;
 }
 
 .room-booking-card {
@@ -358,3 +359,5 @@ body {
     border-bottom: 1px solid #eee;
     text-align: left;
 }
+
+

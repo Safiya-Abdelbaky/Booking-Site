@@ -1,58 +1,74 @@
+// 1. Get user data from browser memory (Local Storage)
+const sessionName = localStorage.getItem('userName');
+const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+// 2. Control the view (Show/Hide elements based on login status)
 const loginSection = document.getElementById('login-section');
 const authorizedMenu = document.getElementById('authorized-menu');
-const logoutButton = document.getElementById('logout-btn');
-const welcomeMessage = document.getElementById('welcome-message');
 
-if (localStorage.getItem('isLoggedIn') === 'true') {
-    if (loginSection) loginSection.style.display = 'none';
-    if (authorizedMenu) authorizedMenu.style.display = 'block';
+// Navbar Elements
+const navUserSection = document.getElementById('navbar-user-section');
+const navGreeting = document.getElementById('nav-greeting');
+
+if (isLoggedIn === 'true') {
+    if (loginSection) {
+        loginSection.style.display = 'none'; // Hide login form
+    }
+    if (authorizedMenu) {
+        authorizedMenu.style.display = 'block'; // Show user menu (VIP Area)
+    }
     
-    const savedUser = localStorage.getItem('userName');
-    if (welcomeMessage && savedUser) {
-        welcomeMessage.innerText = ` Welcome Back, ${savedUser}!`;
+    // Show navbar user section and set greeting
+    if (navUserSection) {
+        navUserSection.style.display = 'flex'; 
+    }
+    if (navGreeting && sessionName) {
+        navGreeting.innerText = `Welcome, ${sessionName}!`; 
     }
 }
 
+// 3. Logout function (Clear memory and refresh)
+const logoutButton = document.getElementById('logout-btn');
+
 if (logoutButton) {
     logoutButton.addEventListener('click', function() {
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('userName');
-        window.location.reload(); 
+        localStorage.removeItem('isLoggedIn'); // Delete login status
+        localStorage.removeItem('userName');   // Delete user name
+        window.location.reload();              // Refresh the page
     });
 }
 
-const sessionName = localStorage.getItem('userName');
+// 4. Auto-fill the client name in booking forms
 const autoNameInputs = document.querySelectorAll('.auto-client-name');
 
-if (sessionName && autoNameInputs.length > 0) {
-    autoNameInputs.forEach(input => {
-        input.value = sessionName; 
+if (sessionName) {
+    autoNameInputs.forEach(function(input) {
+        input.value = sessionName; // Put the saved name inside the input
     });
 }
 
-// --- Dynamic Dashboard URL Parameter Injection ---
-// Resolves authorization boundaries by appending identity to dashboard requests
+// 5. Add user name to dashboard links
 const dashboardLinks = document.querySelectorAll('.dashboard-link');
-if (sessionName && dashboardLinks.length > 0) {
-    dashboardLinks.forEach(link => {
-        link.href = `/dashboard?user=${encodeURIComponent(sessionName)}`;
+
+if (sessionName) {
+    dashboardLinks.forEach(function(link) {
+        link.href = `/dashboard?user=${encodeURIComponent(sessionName)}`; // Update URL
     });
 }
 
+// 6. Prevent users from selecting past dates
+const today = new Date().toISOString().split('T')[0]; // Get today's date (YYYY-MM-DD)
 
-// --- Client-Side Validation: Prevent Booking Past Dates ---
-const today = new Date().toISOString().split('T')[0];
-
-// Apply to search form in rooms.html
+// For the search form
 const searchDateInput = document.querySelector('input[name="date"]');
 if (searchDateInput) {
-    searchDateInput.setAttribute('min', today);
+    searchDateInput.setAttribute('min', today); // Set minimum date
 }
 
-// Apply to all update forms in dashboard.html
+// For the update forms
 const updateDateInputs = document.querySelectorAll('.future-date-only');
-if (updateDateInputs.length > 0) {
-    updateDateInputs.forEach(input => {
-        input.setAttribute('min', today);
+if (updateDateInputs) {
+    updateDateInputs.forEach(function(input) {
+        input.setAttribute('min', today); // Set minimum date
     });
 }

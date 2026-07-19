@@ -5,13 +5,13 @@
     <title>Available Workspaces</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-<body class="cream-theme">
+<body>
     
     <div class="full-page-container">
         
         <div class="header-section">
             <h1 class="gradient-text">Find Your Perfect Workspace</h1>
-            <p style="color: #555; font-size: 18px;">Select your desired time to instantly see available rooms.</p>
+            <p style="color: #09532a; font-size: 18px;">Select your desired time to instantly see available rooms.</p>
         </div>
 
         <div class="search-bar-container" style="max-width: 800px;">
@@ -27,13 +27,19 @@
                 <div class="search-field">
                     <label>From</label>
                     <select name="start_time" id="start_time_select" required>
-                        <option value="08:00 AM">08:00 AM</option>
+                        
                         <option value="09:00 AM">09:00 AM</option>
+                        <option value="09:30 AM">09:30 AM</option>
                         <option value="10:00 AM">10:00 AM</option>
+                        <option value="10:30 AM">10:30 AM</option>
                         <option value="11:00 AM">11:00 AM</option>
+                        <option value="11:30 AM">11:30 AM</option>
                         <option value="12:00 PM">12:00 PM</option>
+                        <option value="12:30 PM">12:30 PM</option>
                         <option value="01:00 PM">01:00 PM</option>
+                        <option value="01:30 PM">01:30 PM</option>
                         <option value="02:00 PM">02:00 PM</option>
+                        <option value="02:30 PM">02:30 PM</option>
                         <option value="03:00 PM">03:00 PM</option>
                     </select>
                 </div>
@@ -41,14 +47,21 @@
                 <div class="search-field">
                     <label>To</label>
                     <select name="end_time" id="end_time_select" required>
-                        <option value="09:00 AM">09:00 AM</option>
+                        
+                        <option value="09:30 AM">09:30 AM</option>
                         <option value="10:00 AM">10:00 AM</option>
+                        <option value="10:30 AM">10:30 AM</option>
                         <option value="11:00 AM">11:00 AM</option>
+                        <option value="11:30 AM">11:30 AM</option>
                         <option value="12:00 PM">12:00 PM</option>
+                        <option value="12:30 PM">12:30 PM</option>
                         <option value="01:00 PM">01:00 PM</option>
+                        <option value="01:30 PM">01:30 PM</option>
                         <option value="02:00 PM">02:00 PM</option>
+                        <option value="02:30 PM">02:30 PM</option>
                         <option value="03:00 PM">03:00 PM</option>
-                        <option value="04:00 PM">04:00 PM</option>
+                        <option value="04:30 PM">04:30 PM</option>
+                        <option value="05:00 PM">05:00 PM</option>
                     </select>
                 </div>
 
@@ -69,8 +82,8 @@
                     </div>
 
                     <div class="selected-time-display">
-                        <p style="margin: 0; color: #555; font-weight: bold;">📅 {{ s_date }}</p>
-                        <p style="margin: 5px 0 0 0; color: #555;">⏱️ {{ s_start }} to {{ s_end }}</p>
+                        <p style="margin: 0; color: #555; font-weight: bold;">{{ s_date }}</p>
+                        <p style="margin: 5px 0 0 0; color: #555;"> {{ s_start }} to {{ s_end }}</p>
                     </div>
 
                     <form action="/book" method="POST">
@@ -96,9 +109,9 @@
         {% endif %}
 
         <div style="text-align: center; margin-top: 60px;">
-            <a href="/" class="link-secondary" style="font-weight: bold;">← Back to Home</a>
+            <a href="/" class="link-secondary" style="font-weight: bold;"> Back to Home</a>
             <span style="margin: 0 15px; color: #ccc;">|</span>
-            <a href="#" class="link-secondary dashboard-link" style="font-weight: bold;">Go to My Dashboard →</a>
+            <a href="#" class="link-secondary dashboard-link" style="font-weight: bold;">Go to My Dashboard </a>
         </div>
 
     </div>
