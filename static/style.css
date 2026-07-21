@@ -276,9 +276,7 @@ body {
     margin-bottom: 0; 
 }
 
-/* ==========================================================================
-   Horizontal Search Bar (Google Calendar Style)
-   ========================================================================== */
+/* Horizontal Search Bar (Google Calendar Style) */
 .search-bar-container {
     background: white;
     border-radius: 50px;
@@ -339,9 +337,7 @@ body {
     text-align: left;
 }
 
-/* ==========================================================================
-   Data Presentation Tables
-   ========================================================================== */
+/* Data Presentation Tables */
 .theme-table {
     width: 100%;
     border-collapse: collapse;

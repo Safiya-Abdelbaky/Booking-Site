@@ -33,41 +33,41 @@
                     <td> {{ booking.date }}<br><span style="color: #555; font-size: 13px;"> {{ booking.time }}</span></td>
                     
                     <td>
-                        <form method="POST" action="/edit/{{ booking.id }}" style="display: flex; gap: 5px; flex-wrap: wrap;">
+                        <form method="POST" action="/edit/{{ booking.id }}" class="edit-form" style="display: flex; gap: 5px; flex-wrap: wrap;">
                             <input type="hidden" name="current_user" value="{{ current_user }}">
-                            <input type="date" name="new_date" class="future-date-only" style="padding: 6px; font-size: 12px; border: 1px solid #ccc; border-radius: 4px;" required>
+                            <input type="date" name="new_date" class="future-date-only" value="{{ booking.date }}" style="padding: 6px; font-size: 12px; border: 1px solid #ccc; border-radius: 4px;" required>
                             
-                            <select name="new_start" style="padding: 6px; font-size: 12px; border: 1px solid #ccc; border-radius: 4px;" required>
+                            <select name="new_start" class="edit-start" style="padding: 6px; font-size: 12px; border: 1px solid #ccc; border-radius: 4px;" required>
                                 <option value="09:00 AM">09:00 AM</option>
-                                    <option value="09:30 AM">09:30 AM</option>
-                                    <option value="10:00 AM">10:00 AM</option>
-                                    <option value="10:30 AM">10:30 AM</option>
-                                    <option value="11:00 AM">11:00 AM</option>
-                                    <option value="11:30 AM">11:30 AM</option>
-                                    <option value="12:00 PM">12:00 PM</option>
-                                    <option value="12:30 PM">12:30 PM</option>
-                                    <option value="01:00 PM">01:00 PM</option>
-                                    <option value="01:30 PM">01:30 PM</option>
-                                    <option value="02:00 PM">02:00 PM</option>
-                                    <option value="02:30 PM">02:30 PM</option>
-                                    <option value="03:00 PM">03:00 PM</option>
+                                <option value="09:30 AM">09:30 AM</option>
+                                <option value="10:00 AM">10:00 AM</option>
+                                <option value="10:30 AM">10:30 AM</option>
+                                <option value="11:00 AM">11:00 AM</option>
+                                <option value="11:30 AM">11:30 AM</option>
+                                <option value="12:00 PM">12:00 PM</option>
+                                <option value="12:30 PM">12:30 PM</option>
+                                <option value="01:00 PM">01:00 PM</option>
+                                <option value="01:30 PM">01:30 PM</option>
+                                <option value="02:00 PM">02:00 PM</option>
+                                <option value="02:30 PM">02:30 PM</option>
+                                <option value="03:00 PM">03:00 PM</option>
                             </select>
                             
-                            <select name="new_end" style="padding: 6px; font-size: 12px; border: 1px solid #ccc; border-radius: 4px;" required>
-                                 <option value="09:30 AM">09:30 AM</option>
-                        <option value="10:00 AM">10:00 AM</option>
-                        <option value="10:30 AM">10:30 AM</option>
-                        <option value="11:00 AM">11:00 AM</option>
-                        <option value="11:30 AM">11:30 AM</option>
-                        <option value="12:00 PM">12:00 PM</option>
-                        <option value="12:30 PM">12:30 PM</option>
-                        <option value="01:00 PM">01:00 PM</option>
-                        <option value="01:30 PM">01:30 PM</option>
-                        <option value="02:00 PM">02:00 PM</option>
-                        <option value="02:30 PM">02:30 PM</option>
-                        <option value="03:00 PM">03:00 PM</option>
-                        <option value="04:30 PM">04:30 PM</option>
-                        <option value="05:00 PM">05:00 PM</option>
+                            <select name="new_end" class="edit-end" style="padding: 6px; font-size: 12px; border: 1px solid #ccc; border-radius: 4px;" required>
+                                <option value="09:30 AM">09:30 AM</option>
+                                <option value="10:00 AM">10:00 AM</option>
+                                <option value="10:30 AM">10:30 AM</option>
+                                <option value="11:00 AM">11:00 AM</option>
+                                <option value="11:30 AM">11:30 AM</option>
+                                <option value="12:00 PM">12:00 PM</option>
+                                <option value="12:30 PM">12:30 PM</option>
+                                <option value="01:00 PM">01:00 PM</option>
+                                <option value="01:30 PM">01:30 PM</option>
+                                <option value="02:00 PM">02:00 PM</option>
+                                <option value="02:30 PM">02:30 PM</option>
+                                <option value="03:00 PM">03:00 PM</option>
+                                <option value="04:30 PM">04:30 PM</option>
+                                <option value="05:00 PM">05:00 PM</option>
                             </select>
                             
                             <button type="submit" class="btn-theme-green" style="padding: 6px 12px; font-size: 12px; width: auto; margin-top: 0;">Update</button>

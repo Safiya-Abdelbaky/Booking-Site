@@ -2,24 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!--Responsive Design --> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Workspace - Welcome</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     
-    <!-- Navbar -->
+    <!-- Top Navbar -->
     <nav class="top-navbar">
         <div class="nav-brand">
             <img src="https://remotecoders.org/_next/image?url=%2Frc-logo.webp&w=750&q=75" alt="Corporate Logo">
         </div>
         
-       
-        <div class="nav-user" id="navbar-user-section" style="display: none;">
-            <span class="user-greeting" id="nav-greeting"></span>
-            <button id="logout-btn" class="btn-outline-danger">Logout</button>
+        <!-- Show user info and logout if logged in -->
+        {% if is_logged_in %}
+        <div class="nav-user" id="navbar-user-section" style="display: flex;">
+            <span class="user-greeting" id="nav-greeting">Welcome, {{ user_name }}!</span>
+            <a href="/logout" id="logout-btn" class="btn-outline-danger" style="text-decoration: none;">Logout</a>
         </div>
+        {% endif %}
     </nav>
 
     <div class="full-page-container" style="text-align: center;">
@@ -29,75 +30,66 @@
             <p style="color: #0a6c4f; font-size: 18px;">Premium environment for remote coders and professionals</p>
         </div>
         
-        <div id="login-section" style="max-width: 500px; margin: 70px auto;">
+        <!-- Display error messages if any -->
+        {% if error %}
+            <div class="error-msg" style="max-width: 500px; margin: 0 auto 20px auto; background: rgba(231, 76, 60, 0.1); color: #c0392b; border-left: 4px solid #e74c3c; padding: 12px; text-align: left; border-radius: 4px;">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <!-- Main Content Layout -->
+        {% if not is_logged_in %}
             
-
-            <!--jinja2 error msg-->
-            {% if error %}
-                <div class="error-msg" style="background: rgba(231, 76, 60, 0.1); color: #c0392b; border-left: 4px solid #e74c3c; padding: 12px; margin-bottom: 20px; text-align: left; border-radius: 4px;">
-                     {{ error }}
+            <!--  Login Form  -->
+            <div id="login-section" style="max-width: 500px; margin: 50px auto;">
+                <div class="room-booking-card" style="padding: 40px; text-align: left;">
+                    <form method="POST" action="/login" id="login-form">
+                        <label for="username" style="color: #1B4332; display: block; margin-bottom: 8px; font-weight: bold;">Username:</label>
+                        <input type="text" id="username" name="username" placeholder="Enter your username" required class="form-input" style="width: 100%; margin-bottom: 20px;">
+                        
+                        <label for="password" style="color: #1B4332; display: block; margin-bottom: 8px; font-weight: bold;">Password:</label>
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required class="form-input" style="width: 100%; margin-bottom: 20px;">
+                        
+                        <div class="auth-buttons" style="width: 100%; margin-top: 25px; display: flex; gap: 10px;">
+                            <button type="submit" name="action" value="signin" class="btn-primary flex-btn" style="flex: 1;">Sign In</button>
+                            <button type="submit" name="action" value="signup" class="btn-secondary flex-btn" style="flex: 1;">Sign Up</button>
+                        </div>
+                    </form>
                 </div>
-            {% endif %}
+            </div>
 
-            <div class="room-booking-card" style="padding: 40px; text-align: left;">
-                <form method="POST" action="/login" id="login-form">
-                    <label for="username" style="color: #1B4332; display: block; margin-bottom: 8px; font-weight: bold;">Username:</label>
-                    <input type="text" id="username" name="username" placeholder="Enter your username" required class="form-input" style="width: 100%; margin-bottom: 20px;">
+        {% else %}
+            
+            <!-- Authenticated View: Room Cards -->
+            <div id="authorized-menu" style="margin-top: 50px;">
+                <div class="room-grid">
                     
-                    <label for="password" style="color: #1B4332; display: block; margin-bottom: 8px; font-weight: bold;">Password:</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required class="form-input" style="width: 100%; margin-bottom: 20px;">
-                    
-                    <div class="auth-buttons" style="width: 100%; margin-top: 25px;">
-                        <button type="submit" name="action" value="signin" class="btn-primary flex-btn">Sign In</button>
-                        <button type="submit" name="action" value="signup" class="btn-secondary flex-btn">Sign Up</button>
+                    <div class="room-booking-card interactive-card" onclick="savePreferenceAndRedirect('Private')" style="cursor: pointer; align-items: center; justify-content: center; min-height: 200px;">
+                        <h3 class="gradient-text" style="font-size: 24px;">Private Rooms</h3>
+                        <p style="color: #555; margin-top: 10px;">Quiet environments for deep focus.</p>
                     </div>
-                </form>
-            </div>
-        </div>
+                    
+                    <div class="room-booking-card interactive-card" onclick="savePreferenceAndRedirect('Open Air')" style="cursor: pointer; align-items: center; justify-content: center; min-height: 200px;">
+                        <h3 class="gradient-text" style="font-size: 24px;">Open Air</h3>
+                        <p style="color: #555; margin-top: 10px;">Creative fresh air setups.</p>
+                    </div>
+                    
+                    <div class="room-booking-card interactive-card" onclick="savePreferenceAndRedirect('Coworker')" style="cursor: pointer; align-items: center; justify-content: center; min-height: 200px;">
+                        <h3 class="gradient-text" style="font-size: 24px;">Coworker Hubs</h3>
+                        <p style="color: #555; margin-top: 10px;">Collaborative shared desks.</p>
+                    </div>
 
-        <div id="authorized-menu" style="display: none;">
-            
-            
-            <div class="room-grid">
-                <div class="room-booking-card interactive-card" onclick="selectSpaceAndRedirect('Private')" style="cursor: pointer; align-items: center; justify-content: center; min-height: 200px;">
-                    <h3 class="gradient-text" style="font-size: 24px;">Private Rooms</h3>
-                    <p style="color: #555; margin-top: 10px;">Quiet environments for deep focus.</p>
                 </div>
                 
-                <div class="room-booking-card interactive-card" onclick="selectSpaceAndRedirect('Open Air')" style="cursor: pointer; align-items: center; justify-content: center; min-height: 200px;">
-                    <h3 class="gradient-text" style="font-size: 24px;">Open Air</h3>
-                    <p style="color: #555; margin-top: 10px;">Creative fresh air setups.</p>
-                </div>
-                
-                <div class="room-booking-card interactive-card" onclick="selectSpaceAndRedirect('Coworker')" style="cursor: pointer; align-items: center; justify-content: center; min-height: 200px;">
-                    <h3 class="gradient-text" style="font-size: 24px;">Coworker Hubs</h3>
-                    <p style="color: #555; margin-top: 10px;">Collaborative shared desks.</p>
+                <div style="margin-top: 50px; display: flex; flex-direction: column; align-items: center; gap: 15px;">
+                    <a href="/rooms" class="btn-primary" style="padding: 15px 40px;" onclick="localStorage.setItem('selectedSpaceType', 'All')">Explore & Book All Rooms</a>
+                    <a href="/dashboard" class="link-secondary dashboard-link" style="font-weight: bold; font-size: 16px;">Open Bookings Dashboard</a>
                 </div>
             </div>
-            
-            <div style="margin-top: 50px; display: flex; flex-direction: column; align-items: center; gap: 15px;">
-                <a href="/rooms" class="btn-primary" style="padding: 15px 40px;" onclick="localStorage.setItem('selectedSpaceType', 'All')">Explore & Book All Rooms</a>
-                <a href="#" class="link-secondary dashboard-link" style="font-weight: bold; font-size: 16px;">Open Bookings Dashboard</a>
-            </div>
-        </div>
 
+        {% endif %}
     </div>
 
-    {% if success_login %}
-        <script>
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('userName', '{{ user_name }}');
-            window.location.href = "/";
-        </script>
-    {% endif %}
-
     <script src="/static/script.js"></script>
-    <script>
-        // Store selected space type and redirect to search page
-        function selectSpaceAndRedirect(spaceType) {
-            localStorage.setItem('selectedSpaceType', spaceType);
-            window.location.href = "/rooms";
-        }
-    </script>
 </body>
 </html>

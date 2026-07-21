@@ -1,1 +1,38 @@
-[{"username": "rana", "password": "123456"}, {"username": "7vzim", "password": "Ironman@1803"}, {"username": "Safiya", "password": "1234"}]
+[
+    {
+        "username": "rana",
+        "password": "123456"
+    },
+    {
+        "username": "7vzim",
+        "password": "Ironman@1803"
+    },
+    {
+        "username": "Safiya",
+        "password": "1234"
+    },
+    {
+        "username": "mohames",
+        "password": "123"
+    },
+    {
+        "username": "mohamed",
+        "password": "123"
+    },
+    {
+        "username": "sandy",
+        "password": "12345"
+    },
+    {
+        "username": "madonna",
+        "password": "123456"
+    },
+    {
+        "username": "yahya",
+        "password": "password"
+    },
+    {
+        "username": "ade",
+        "password": "11"
+    }
+]

@@ -1,74 +1,71 @@
-// 1. Get user data from browser memory (Local Storage)
-const sessionName = localStorage.getItem('userName');
-const isLoggedIn = localStorage.getItem('isLoggedIn');
+// Run the code after the page loads completely
 
-// 2. Control the view (Show/Hide elements based on login status)
-const loginSection = document.getElementById('login-section');
-const authorizedMenu = document.getElementById('authorized-menu');
+window.onload = function() {
 
-// Navbar Elements
-const navUserSection = document.getElementById('navbar-user-section');
-const navGreeting = document.getElementById('nav-greeting');
-
-if (isLoggedIn === 'true') {
-    if (loginSection) {
-        loginSection.style.display = 'none'; // Hide login form
-    }
-    if (authorizedMenu) {
-        authorizedMenu.style.display = 'block'; // Show user menu (VIP Area)
-    }
+    // 1. Date Validation (Prevent picking past dates)
+    const today = new Date().toISOString().split('T')[0];
     
-    // Show navbar user section and set greeting
-    if (navUserSection) {
-        navUserSection.style.display = 'flex'; 
+    // Apply to search form
+    const searchDateInput = document.querySelector('input[name="date"]');
+    if (searchDateInput) {
+        searchDateInput.setAttribute('min', today);
     }
-    if (navGreeting && sessionName) {
-        navGreeting.innerText = `Welcome, ${sessionName}!`; 
+
+
+    // Apply to all edit forms 
+    const updateInputs = document.querySelectorAll('.future-date-only');
+    for (let i = 0; i < updateInputs.length; i++) {
+        updateInputs[i].setAttribute('min', today);
     }
-}
 
-// 3. Logout function (Clear memory and refresh)
-const logoutButton = document.getElementById('logout-btn');
+    // 2. Time Validation Logic (Start time must be before End time)
+    function setupTimeSync(startDropdown, endDropdown) {
+        if (startDropdown && endDropdown) {
+            
+            // Using onchange 
+            startDropdown.onchange = function() {
+                const startIndex = this.selectedIndex;
+                const endOptions = endDropdown.options;
+                
+                // Loop through end time options to disable past times
+                for (let j = 0; j < endOptions.length; j++) {
+                    if (j < startIndex) {
+                        endOptions[j].disabled = true;
+                        endOptions[j].style.display = 'none';
+                    } else {
+                        endOptions[j].disabled = false;
+                        endOptions[j].style.display = 'block';
+                    }
+                }
+                
+                // Push end time forward if it conflicts
+                if (endDropdown.selectedIndex < startIndex) {
+                    endDropdown.selectedIndex = startIndex;
+                }
+            };
+            
+            // Trigger the change event manually on load to set initial state
+            startDropdown.onchange();
+        }
+    }
 
-if (logoutButton) {
-    logoutButton.addEventListener('click', function() {
-        localStorage.removeItem('isLoggedIn'); // Delete login status
-        localStorage.removeItem('userName');   // Delete user name
-        window.location.reload();              // Refresh the page
-    });
-}
+    // Apply time logic to the Search Page
+    const mainStart = document.getElementById('start_time_select');
+    const mainEnd = document.getElementById('end_time_select');
+    setupTimeSync(mainStart, mainEnd);
 
-// 4. Auto-fill the client name in booking forms
-const autoNameInputs = document.querySelectorAll('.auto-client-name');
+    // Apply time logic to the Dashboard Edit Forms
+    const editForms = document.querySelectorAll('.edit-form');
+    for (let k = 0; k < editForms.length; k++) {
+        const editStart = editForms[k].querySelector('.edit-start');
+        const editEnd = editForms[k].querySelector('.edit-end');
+        setupTimeSync(editStart, editEnd);
+    }
 
-if (sessionName) {
-    autoNameInputs.forEach(function(input) {
-        input.value = sessionName; // Put the saved name inside the input
-    });
-}
+};
 
-// 5. Add user name to dashboard links
-const dashboardLinks = document.querySelectorAll('.dashboard-link');
 
-if (sessionName) {
-    dashboardLinks.forEach(function(link) {
-        link.href = `/dashboard?user=${encodeURIComponent(sessionName)}`; // Update URL
-    });
-}
-
-// 6. Prevent users from selecting past dates
-const today = new Date().toISOString().split('T')[0]; // Get today's date (YYYY-MM-DD)
-
-// For the search form
-const searchDateInput = document.querySelector('input[name="date"]');
-if (searchDateInput) {
-    searchDateInput.setAttribute('min', today); // Set minimum date
-}
-
-// For the update forms
-const updateDateInputs = document.querySelectorAll('.future-date-only');
-if (updateDateInputs) {
-    updateDateInputs.forEach(function(input) {
-        input.setAttribute('min', today); // Set minimum date
-    });
+function savePreferenceAndRedirect(spaceType) {
+    localStorage.setItem('selectedSpaceType', spaceType);
+    window.location.href = "/rooms";
 }
