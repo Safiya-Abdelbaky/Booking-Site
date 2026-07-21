@@ -143,10 +143,10 @@ def login():
 @app.route('/rooms', methods=['GET', 'POST'])
 def rooms():
     all_rooms = [
-        {"name": "CAIRO Room", "type": "Private"},
-        {"name": "SANAA Space", "type": "Open Air"},
-        {"name": "ASMARA Hub", "type": "Coworker"},
-        {"name": "KHARTOUM Desk", "type": "Coworker"}
+        {"name": "CAIRO", "type": "Private"},
+        {"name": "SANAA", "type": "Open Air"},
+        {"name": "ASMARA", "type": "Coworker"},
+        {"name": "KHARTOUM", "type": "Coworker"}
     ]
 
     if request.method == 'POST':

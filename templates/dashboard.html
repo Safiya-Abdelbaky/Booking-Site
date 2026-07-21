@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Bookings Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    
+    <div class="full-page-container" style="background: white; border: 1px solid #ddd; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 12px; padding: 40px;">
+        <h1 class="gradient-text" style="text-align: center;">My Reserved Slots</h1>
+        <p style="text-align: center; color: #555;">Managing records for: <strong>{{ current_user }}</strong></p>
+        
+        {% if error %}
+            <div class="error-msg" style="max-width: 800px; margin: 20px auto; background: rgba(231, 76, 60, 0.1); color: #c0392b; border-left: 4px solid #e74c3c; padding: 12px; border-radius: 4px; font-weight: bold; text-align: center;">
+                 {{ error }}
+            </div>
+        {% endif %}
+        
+        <table class="theme-table" style="margin-top: 30px;">
+            <thead>
+                <tr>
+                    <th>Selected Space</th>
+                    <th>Current Schedule</th>
+                    <th>Modify Schedule</th>
+                    <th>Cancel</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td style="font-weight: bold; color: #1B4332;">{{ booking.room }}</td>
+                    <td> {{ booking.date }}<br><span style="color: #555; font-size: 13px;"> {{ booking.time }}</span></td>
+                    
+                    <td>
+                        <form method="POST" action="/edit/{{ booking.id }}" style="display: flex; gap: 5px; flex-wrap: wrap;">
+                            <input type="hidden" name="current_user" value="{{ current_user }}">
+                            <input type="date" name="new_date" class="future-date-only" style="padding: 6px; font-size: 12px; border: 1px solid #ccc; border-radius: 4px;" required>
+                            
+                            <select name="new_start" style="padding: 6px; font-size: 12px; border: 1px solid #ccc; border-radius: 4px;" required>
+                                <option value="09:00 AM">09:00 AM</option>
+                                    <option value="09:30 AM">09:30 AM</option>
+                                    <option value="10:00 AM">10:00 AM</option>
+                                    <option value="10:30 AM">10:30 AM</option>
+                                    <option value="11:00 AM">11:00 AM</option>
+                                    <option value="11:30 AM">11:30 AM</option>
+                                    <option value="12:00 PM">12:00 PM</option>
+                                    <option value="12:30 PM">12:30 PM</option>
+                                    <option value="01:00 PM">01:00 PM</option>
+                                    <option value="01:30 PM">01:30 PM</option>
+                                    <option value="02:00 PM">02:00 PM</option>
+                                    <option value="02:30 PM">02:30 PM</option>
+                                    <option value="03:00 PM">03:00 PM</option>
+                            </select>
+                            
+                            <select name="new_end" style="padding: 6px; font-size: 12px; border: 1px solid #ccc; border-radius: 4px;" required>
+                                 <option value="09:30 AM">09:30 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="10:30 AM">10:30 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="11:30 AM">11:30 AM</option>
+                        <option value="12:00 PM">12:00 PM</option>
+                        <option value="12:30 PM">12:30 PM</option>
+                        <option value="01:00 PM">01:00 PM</option>
+                        <option value="01:30 PM">01:30 PM</option>
+                        <option value="02:00 PM">02:00 PM</option>
+                        <option value="02:30 PM">02:30 PM</option>
+                        <option value="03:00 PM">03:00 PM</option>
+                        <option value="04:30 PM">04:30 PM</option>
+                        <option value="05:00 PM">05:00 PM</option>
+                            </select>
+                            
+                            <button type="submit" class="btn-theme-green" style="padding: 6px 12px; font-size: 12px; width: auto; margin-top: 0;">Update</button>
+                        </form>
+                    </td>
+
+                    <td>
+                        <form method="POST" action="/delete/{{ booking.id }}">
+                            <input type="hidden" name="current_user" value="{{ current_user }}">
+                            <button type="submit" class="btn-danger" style="padding: 6px 12px; font-size: 12px;">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" style="text-align: center; padding: 30px; color: #777;">You have no active reservations in your calendar.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/" class="link-secondary" style="font-weight: bold;">Go Back Home</a>
+        </div>
+    </div>
+    
+    <script src="/static/script.js"></script>
+</body>
+</html>
