@@ -1,18 +1,18 @@
-// Run the code after the page loads completely
+// run this script after the page has fully loaded
 
-window.onload = function() {
+window.onload = function () {
 
     // 1. Date Validation (Prevent picking past dates)
     const today = new Date().toISOString().split('T')[0];
-    
-    // Apply to search form
+
+    // apply to the search form (room)
     const searchDateInput = document.querySelector('input[name="date"]');
     if (searchDateInput) {
         searchDateInput.setAttribute('min', today);
     }
 
 
-    // Apply to all edit forms 
+    // apply to the edit forms (dashboard)
     const updateInputs = document.querySelectorAll('.future-date-only');
     for (let i = 0; i < updateInputs.length; i++) {
         updateInputs[i].setAttribute('min', today);
@@ -21,12 +21,12 @@ window.onload = function() {
     // 2. Time Validation Logic (Start time must be before End time)
     function setupTimeSync(startDropdown, endDropdown) {
         if (startDropdown && endDropdown) {
-            
+
             // Using onchange 
-            startDropdown.onchange = function() {
-                const startIndex = this.selectedIndex;
-                const endOptions = endDropdown.options;
-                
+            startDropdown.onchange = function () {
+                const startIndex = this.selectedIndex; //get the index of the selected start time
+                const endOptions = endDropdown.options; //all options of the end time dropdown  
+
                 // Loop through end time options to disable past times
                 for (let j = 0; j < endOptions.length; j++) {
                     if (j < startIndex) {
@@ -37,13 +37,13 @@ window.onload = function() {
                         endOptions[j].style.display = 'block';
                     }
                 }
-                
+
                 // Push end time forward if it conflicts
                 if (endDropdown.selectedIndex < startIndex) {
                     endDropdown.selectedIndex = startIndex;
                 }
             };
-            
+
             // Trigger the change event manually on load to set initial state
             startDropdown.onchange();
         }

@@ -6,6 +6,22 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+
+
+    <!-- Top Navbar -->
+    <nav class="top-navbar">
+        <div class="nav-brand">
+            <img src="https://remotecoders.org/_next/image?url=%2Frc-logo.webp&w=750&q=75" alt="Corporate Logo">
+        </div>
+        
+        <!-- Show user info and logout if logged in -->
+        {% if is_logged_in %}
+        <div class="nav-user" id="navbar-user-section" style="display: flex;">
+            <span class="user-greeting" id="nav-greeting">Welcome, {{ user_name }}!</span>
+            <a href="/logout" id="logout-btn" class="btn-outline-danger" style="text-decoration: none;">Logout</a>
+        </div>
+        {% endif %}
+    </nav>
     
     <div class="full-page-container" style="background: white; border: 1px solid #ddd; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 12px; padding: 40px;">
         <h1 class="gradient-text" style="text-align: center;">My Reserved Slots</h1>
@@ -70,17 +86,17 @@
                                 <option value="05:00 PM">05:00 PM</option>
                             </select>
                             
-                            <button type="submit" class="btn-theme-green" style="padding: 6px 12px; font-size: 12px; width: auto; margin-top: 0;">Update</button>
+                            <button type="submit" style="background-color: #174233; color: white; border: none; border-radius: 20px; padding: 8px 16px; font-size: 13px; font-weight: bold; cursor: pointer; transition: 0.3s;">Update</button>
                         </form>
                     </td>
 
                     <td>
                         <form method="POST" action="/delete/{{ booking.id }}">
                             <input type="hidden" name="current_user" value="{{ current_user }}">
-                            <button type="submit" class="btn-danger" style="padding: 6px 12px; font-size: 12px;">Delete</button>
-                        </form>
+                            <button type="submit" style="background-color: #ae0d1d; color: white; border: none; border-radius: 20px; padding: 8px 16px; font-size: 13px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; transition: 0.3s;">Delete</button>
                     </td>
                 </tr>
+
                 {% else %}
                 <tr>
                     <td colspan="4" style="text-align: center; padding: 30px; color: #777;">You have no active reservations in your calendar.</td>
