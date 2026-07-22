@@ -10,40 +10,40 @@ The application implements an advanced backend validation logic (using datetime 
 
 ## Project Checklist
 
-[x] It is available on GitHub.
+- [x] It is available on GitHub.
 
-[x] It uses the Flask web framework.
+- [x] It uses the Flask web framework.
 
-[x] It uses at least one module from the Python Standard Library other than the random module.
+- [x] It uses at least one module from the Python Standard Library other than the random module.
 Module name: `datetime`, `json`, and `os`
 
-[x] It contains at least one class written by you that has both properties and methods. It uses `__init__()` to let the class initialize the object's attributes 
+- [x] It contains at least one class written by you that has both properties and methods. It uses `__init__()` to let the class initialize the object's attributes 
 File name for the class definition: `app.py`
 Line number(s) for the class definition: 10
 Name of two properties: `self.bookings_file` and `self.users_file`
 Name of two methods: `save_booking()` and `update_booking()`
 File name and line numbers where the methods are used: `app.py`, instantiated at line 46 (`manager = WorkspaceManager(...)`), and methods used at line 102 (`manager.register_user`), line 143 (`manager.get_bookings()`), and line 171 (`manager.save_booking`).
 
-[x] It makes use of JavaScript in the front end and uses the localStorage of the web browser.
+- [x] It makes use of JavaScript in the front end and uses the localStorage of the web browser.
 
-[x] It uses modern JavaScript (for example, let and const rather than var).
+- [x] It uses modern JavaScript (for example, let and const rather than var).
 
-[x] It makes use of the reading and writing to the same file feature.
+- [x] It makes use of the reading and writing to the same file feature.
 
-[x] It contains conditional statements.
+- [x] It contains conditional statements.
 File name: `app.py`
 Line number(s): 15 (`if not os.path.exists(self.bookings_file):`) and 86 (`if 'user' in session:`)
 
-[x] It contains loops.
+- [x] It contains loops.
 File name: `app.py`
 Line number(s): 26 (`for user in users:`) and 146 (`for room in all_rooms:`)
 
-[x] It lets the user enter a value in a text box at some point. This value is received and processed by your back end Python code.
+- [x] It lets the user enter a value in a text box at some point. This value is received and processed by your back end Python code.
 
-[x] It doesn't generate any error message even if the user enters a wrong input.
+- [x] It doesn't generate any error message even if the user enters a wrong input.
 
-[x] It is styled using your own CSS.
+- [x] It is styled using your own CSS.
 
-[x] The code follows the code and style conventions as introduced in the course, is fully documented using comments and doesn't contain unused or experimental code. In particular, the code should not use `print()` or `console.log()` for any information the app user should see. Instead, all user feedback needs to be visible in the browser.
+- [x] The code follows the code and style conventions as introduced in the course, is fully documented using comments and doesn't contain unused or experimental code. In particular, the code should not use `print()` or `console.log()` for any information the app user should see. Instead, all user feedback needs to be visible in the browser.
 
-[x] All exercises have been completed as per the requirements and pushed to the respective GitHub repository.
+- [x] All exercises have been completed as per the requirements and pushed to the respective GitHub repository.
