@@ -4,16 +4,18 @@ import json
 import os
 
 app = Flask(__name__)
-# Secret key for session security
+# Secret key needed to keep user sessions secure
 app.secret_key = 'RC_Workspace_123_Secret'
 
 class WorkspaceManager:
     def __init__(self, bookings_file, users_file):
         self.bookings_file = bookings_file
         self.users_file = users_file
+        # Make sure our database files exist before we do anything else
         self.initialize_json_files()
 
     def initialize_json_files(self):
+        # Create empty JSON files if they don't already exist
         if not os.path.exists(self.bookings_file):
             with open(self.bookings_file, 'w', encoding='utf-8') as f:
                 json.dump([], f)
@@ -22,6 +24,7 @@ class WorkspaceManager:
                 json.dump([], f)
 
     def load_json_data(self, filepath):
+        # Safely read data from a JSON file, return an empty list if it fails
         try:
             with open(filepath, 'r', encoding='utf-8') as f:
                 return json.load(f)
@@ -30,9 +33,13 @@ class WorkspaceManager:
 
     def register_user(self, username, password):
         users = self.load_json_data(self.users_file)
+        
+        # Check if the username is already taken
         for user in users:
             if user['username'] == username:
                 return False
+                
+        # Add new user and save
         users.append({"username": username, "password": password})
         with open(self.users_file, 'w', encoding='utf-8') as f:
             json.dump(users, f, indent=4)
@@ -50,7 +57,9 @@ class WorkspaceManager:
 
     def save_booking(self, name, room_type, date, time_slot):
         bookings = self.get_bookings()
+        
         new_booking = {
+            # Using minutes and seconds as a simple unique ID
             "id": datetime.now().strftime("%M%S"),
             "name": name,
             "room": room_type,
@@ -59,44 +68,60 @@ class WorkspaceManager:
             "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
         bookings.append(new_booking)
+        
         with open(self.bookings_file, 'w', encoding='utf-8') as f:
             json.dump(bookings, f, indent=4)
 
     def update_booking(self, booking_id, new_date, new_time):
         bookings = self.get_bookings()
+        
+        # Find the specific booking and update its details
         for b in bookings:
             if b['id'] == booking_id:
                 b['date'] = new_date
                 b['time'] = new_time
                 break
+                
         with open(self.bookings_file, 'w', encoding='utf-8') as f:
             json.dump(bookings, f, indent=4)
 
     def delete_booking(self, booking_id):
         bookings = self.get_bookings()
+        # Keep all bookings except the one we want to delete
         bookings = [b for b in bookings if b['id'] != booking_id]
+        
         with open(self.bookings_file, 'w', encoding='utf-8') as f:
             json.dump(bookings, f, indent=4)
 
+
+# Instantiate the manager globally so all routes can use it
 manager = WorkspaceManager("bookings.json", "users.json")
 
-# --- Central Validation Logic ---
+
 def is_time_overlap(req_start, req_end, booked_time_str):
+    # Compares two time slots to see if they clash
     try:
         book_start, book_end = booked_time_str.split(' - ')
         fmt = "%I:%M %p"
+        
+ # Convert string times to datetime objects for easy comparison
         rs = datetime.strptime(req_start, fmt)
         re = datetime.strptime(req_end, fmt)
         bs = datetime.strptime(book_start, fmt)
         be = datetime.strptime(book_end, fmt)
         
+# Catch illogical inputs where start is after end
         if rs >= re:
             return True 
+            
+# Overlap math: max of starts < min of ends means they overlap
         return max(rs, bs) < min(re, be)
     except Exception:
+        # If the time format is corrupted, block it just to be safe
         return True 
 
 def is_past_time(req_date, req_start):
+ # Checks if the requested date/time has already passed
     try:
         fmt = "%Y-%m-%d %I:%M %p"
         req_dt = datetime.strptime(f"{req_date} {req_start}", fmt)
@@ -105,6 +130,7 @@ def is_past_time(req_date, req_start):
         return True 
 
 def validate_time_slot(room_name, date, start_time, end_time, current_booking_id=None):
+ # The main bouncer for bookings. Checks past times, logic, and conflicts.
     if is_past_time(date, start_time):
         return False, "Cannot set reservation to a past date/time."
     
@@ -119,20 +145,23 @@ def validate_time_slot(room_name, date, start_time, end_time, current_booking_id
 
     bookings = manager.get_bookings()
     for b in bookings:
+# Skip checking against the booking we are currently trying to edit
         if current_booking_id and b['id'] == current_booking_id:
             continue
             
+# If someone else booked the same room on the same day, check the times
         if b['room'] == room_name and b['date'] == date:
             if is_time_overlap(start_time, end_time, b['time']):
                 return False, "The selected time slot is already booked."
-                
+              
     return True, ""
 
 
-# --- Routes ---
+#  Routes 
 
 @app.route('/')
 def home():
+ # Show the homepage, check if user is already logged in
     if 'user' in session:
         return render_template('index.html', is_logged_in=True, user_name=session['user'])
     else:
@@ -140,6 +169,7 @@ def home():
 
 @app.route('/login', methods=['POST'])
 def login():
+# Handles both signup and signin from the same form based on the action button clicked
     action = request.form.get('action')
     username = request.form.get('username')
     password = request.form.get('password')
@@ -184,6 +214,7 @@ def rooms():
         if not search_date or not start_time or not end_time:
             return render_template('rooms.html', error="Please select valid date and times.", search_active=False)
 
+        # Basic logic check (dates in past, etc.) before we start looping through rooms
         is_valid, error_msg = validate_time_slot(None, search_date, start_time, end_time)
         if not is_valid and error_msg != "The selected time slot is already booked.":
             return render_template('rooms.html', error=error_msg, search_active=False)
@@ -191,6 +222,7 @@ def rooms():
         bookings = manager.get_bookings()
         available_rooms = []
 
+        # Filter out rooms that are booked or don't match the selected type
         for room in all_rooms:
             if room_type_filter != "All" and room['type'] != room_type_filter:
                 continue
@@ -202,15 +234,18 @@ def rooms():
                         is_booked = True
                         break 
             
+            # If the room survived the checks, add it to the results
             if not is_booked:
                 available_rooms.append(room)
 
         return render_template('rooms.html', rooms=available_rooms, search_active=True, s_date=search_date, s_start=start_time, s_end=end_time)
 
+    # For GET requests (just loading the page normally)
     return render_template('rooms.html', search_active=False)
 
 @app.route('/book', methods=['POST'])
 def book():
+    # Protect route from unauthorized users
     if 'user' not in session:
         return redirect(url_for('home'))
 
@@ -224,6 +259,7 @@ def book():
     except ValueError:
         return redirect(url_for('dashboard', error="Booking failed: Invalid time format."))
 
+    # Final check before saving, in case someone else booked it a second ago
     is_valid, error_msg = validate_time_slot(room_type, date, req_start, req_end)
     
     if not is_valid:
@@ -241,10 +277,12 @@ def dashboard():
     error_msg = request.args.get('error') 
     all_bookings = manager.get_bookings()
     
+    # Only show bookings that belong to the logged-in user
     user_bookings = [b for b in all_bookings if b['name'] == current_user]
-        
-    return render_template('dashboard.html', bookings=user_bookings, current_user=current_user, error=error_msg)
-
+    if 'user' in session:
+        return render_template('dashboard.html', bookings=user_bookings, current_user=current_user, error=error_msg, is_logged_in=True, user_name=current_user)
+    else:
+        return render_template('dashboard.html', bookings=user_bookings, current_user=current_user, error=error_msg, is_logged_in=False)
 @app.route('/edit/<booking_id>', methods=['POST'])
 def edit(booking_id):
     if 'user' not in session:
@@ -256,6 +294,8 @@ def edit(booking_id):
     
     bookings = manager.get_bookings()
     target_booking = None
+    
+    # Locate the specific booking to get its current details
     for b in bookings:
         if b['id'] == booking_id:
             target_booking = b
@@ -266,6 +306,7 @@ def edit(booking_id):
 
     room_name = target_booking['room']
 
+    # Validate the new time slot (passing the ID so it doesn't conflict with itself)
     is_valid, error_msg = validate_time_slot(room_name, new_date, new_start, new_end, current_booking_id=booking_id)
     
     if not is_valid:
@@ -286,3 +327,5 @@ def delete(booking_id):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+ 

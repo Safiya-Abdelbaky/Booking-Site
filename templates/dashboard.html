@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>My Bookings Dashboard</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
 
 
@@ -13,7 +15,7 @@
         <div class="nav-brand">
             <img src="https://remotecoders.org/_next/image?url=%2Frc-logo.webp&w=750&q=75" alt="Corporate Logo">
         </div>
-        
+
         <!-- Show user info and logout if logged in -->
         {% if is_logged_in %}
         <div class="nav-user" id="navbar-user-section" style="display: flex;">
@@ -22,17 +24,19 @@
         </div>
         {% endif %}
     </nav>
-    
-    <div class="full-page-container" style="background: white; border: 1px solid #ddd; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 12px; padding: 40px;">
+
+    <div class="full-page-container"
+        style="background: white; border: 1px solid #ddd; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 12px; padding: 40px;">
         <h1 class="gradient-text" style="text-align: center;">My Reserved Slots</h1>
         <p style="text-align: center; color: #555;">Managing records for: <strong>{{ current_user }}</strong></p>
-        
+
         {% if error %}
-            <div class="error-msg" style="max-width: 800px; margin: 20px auto; background: rgba(231, 76, 60, 0.1); color: #c0392b; border-left: 4px solid #e74c3c; padding: 12px; border-radius: 4px; font-weight: bold; text-align: center;">
-                 {{ error }}
-            </div>
+        <div class="error-msg"
+            style="max-width: 800px; margin: 20px auto; background: rgba(231, 76, 60, 0.1); color: #c0392b; border-left: 4px solid #e74c3c; padding: 12px; border-radius: 4px; font-weight: bold; text-align: center;">
+            {{ error }}
+        </div>
         {% endif %}
-        
+
         <table class="theme-table" style="margin-top: 30px;">
             <thead>
                 <tr>
@@ -46,70 +50,83 @@
                 {% for booking in bookings %}
                 <tr>
                     <td style="font-weight: bold; color: #1B4332;">{{ booking.room }}</td>
-                    <td> {{ booking.date }}<br><span style="color: #555; font-size: 13px;"> {{ booking.time }}</span></td>
-                    
+                    <td> {{ booking.date }}<br><span style="color: #555; font-size: 13px;"> {{ booking.time }}</span>
+                    </td>
+
                     <td>
-                        <form method="POST" action="/edit/{{ booking.id }}" class="edit-form" style="display: flex; gap: 5px; flex-wrap: wrap;">
+                        <form method="POST" action="/edit/{{ booking.id }}" class="edit-form"
+                            style="display: flex; gap: 5px; flex-wrap: wrap;">
                             <input type="hidden" name="current_user" value="{{ current_user }}">
-                            <input type="date" name="new_date" class="future-date-only" value="{{ booking.date }}" style="padding: 6px; font-size: 12px; border: 1px solid #ccc; border-radius: 4px;" required>
-                            
-                            <select name="new_start" class="edit-start" style="padding: 6px; font-size: 12px; border: 1px solid #ccc; border-radius: 4px;" required>
-                                <option value="09:00 AM">09:00 AM</option>
-                                <option value="09:30 AM">09:30 AM</option>
-                                <option value="10:00 AM">10:00 AM</option>
-                                <option value="10:30 AM">10:30 AM</option>
-                                <option value="11:00 AM">11:00 AM</option>
-                                <option value="11:30 AM">11:30 AM</option>
-                                <option value="12:00 PM">12:00 PM</option>
-                                <option value="12:30 PM">12:30 PM</option>
-                                <option value="01:00 PM">01:00 PM</option>
-                                <option value="01:30 PM">01:30 PM</option>
-                                <option value="02:00 PM">02:00 PM</option>
-                                <option value="02:30 PM">02:30 PM</option>
-                                <option value="03:00 PM">03:00 PM</option>
+                            <input type="date" name="new_date" class="future-date-only" value="{{ booking.date }}"
+                                style="padding: 6px; font-size: 12px; border: 1px solid #ccc; border-radius: 4px;"
+                                required>
+
+                            {% set start_time, end_time = booking.time.split(' - ') %}
+
+
+                            {% set start_options = [
+                            "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM",
+                            "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM",
+                            "01:00 PM", "01:30 PM", "02:00 PM", "02:30 PM",
+                            "03:00 PM"
+                            ] %}
+
+                            {% set end_options = [
+                            "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM",
+                            "11:30 AM", "12:00 PM", "12:30 PM", "01:00 PM",
+                            "01:30 PM", "02:00 PM", "02:30 PM", "03:00 PM",
+                            "04:30 PM", "05:00 PM"
+                            ] %}
+
+                            <select name="new_start" class="edit-start"
+                                style="padding: 6px; font-size: 12px; border: 1px solid #ccc; border-radius: 4px;"
+                                required>
+                                {% for time in start_options %}
+                                <option value="{{ time }}" {% if time==start_time %}selected{% endif %}>
+                                    {{ time }}
+                                </option>
+                                {% endfor %}
                             </select>
-                            
-                            <select name="new_end" class="edit-end" style="padding: 6px; font-size: 12px; border: 1px solid #ccc; border-radius: 4px;" required>
-                                <option value="09:30 AM">09:30 AM</option>
-                                <option value="10:00 AM">10:00 AM</option>
-                                <option value="10:30 AM">10:30 AM</option>
-                                <option value="11:00 AM">11:00 AM</option>
-                                <option value="11:30 AM">11:30 AM</option>
-                                <option value="12:00 PM">12:00 PM</option>
-                                <option value="12:30 PM">12:30 PM</option>
-                                <option value="01:00 PM">01:00 PM</option>
-                                <option value="01:30 PM">01:30 PM</option>
-                                <option value="02:00 PM">02:00 PM</option>
-                                <option value="02:30 PM">02:30 PM</option>
-                                <option value="03:00 PM">03:00 PM</option>
-                                <option value="04:30 PM">04:30 PM</option>
-                                <option value="05:00 PM">05:00 PM</option>
+
+                            <select name="new_end" class="edit-end"
+                                style="padding: 6px; font-size: 12px; border: 1px solid #ccc; border-radius: 4px;"
+                                required>
+                                {% for time in end_options %}
+                                <option value="{{ time }}" {% if time==end_time %}selected{% endif %}>
+                                    {{ time }}
+                                </option>
+                                {% endfor %}
                             </select>
-                            
-                            <button type="submit" style="background-color: #174233; color: white; border: none; border-radius: 20px; padding: 8px 16px; font-size: 13px; font-weight: bold; cursor: pointer; transition: 0.3s;">Update</button>
+
+
+                            <button type="submit"
+                                style="background-color: #174233; color: white; border: none; border-radius: 20px; padding: 8px 16px; font-size: 13px; font-weight: bold; cursor: pointer; transition: 0.3s;">Update</button>
                         </form>
                     </td>
 
                     <td>
                         <form method="POST" action="/delete/{{ booking.id }}">
                             <input type="hidden" name="current_user" value="{{ current_user }}">
-                            <button type="submit" style="background-color: #ae0d1d; color: white; border: none; border-radius: 20px; padding: 8px 16px; font-size: 13px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; transition: 0.3s;">Delete</button>
+                            <button type="submit"
+                                style="background-color: #ae0d1d; color: white; border: none; border-radius: 20px; padding: 8px 16px; font-size: 13px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; transition: 0.3s;">Delete</button>
                     </td>
                 </tr>
 
                 {% else %}
                 <tr>
-                    <td colspan="4" style="text-align: center; padding: 30px; color: #777;">You have no active reservations in your calendar.</td>
+                    <td colspan="4" style="text-align: center; padding: 30px; color: #777;">You have no active
+                        reservations in your calendar.</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        
+
         <div style="text-align: center; margin-top: 30px;">
             <a href="/" class="link-secondary" style="font-weight: bold;">Go Back Home</a>
         </div>
     </div>
-    
+
     <script src="/static/script.js"></script>
 </body>
+
 </html>

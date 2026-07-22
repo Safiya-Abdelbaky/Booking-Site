@@ -1,17 +1,51 @@
-*Back-end & Python*
-- [x] The application uses the Flask web framework.
-- [x] The code implements at least one module from the Python Standard Library other than the random module.
-- [x] The code contains at least one custom-written class that includes both properties and methods.
-- [x] The class utilizes the __init__() function to initialize the object's properties.
-- [x] The application successfully instantiates the class and actively uses its methods.
-- [ ] The application makes use of reading from and writing to the same file.
-- [x] The Python code contains both conditional statements and loops.
-- [ ] The back-end successfully receives and processes a value entered by the user via a text box.
+# RC Workspace Booking System
 
-*Front-end & User Interface*
-- [x] The application implements JavaScript in the front-end.
-- [ ] The code uses modern JavaScript syntax ( const ).
-- [ ] The application utilizes the web browser's localStorage feature.
-- [x] The application is styled utilizing CSS.
-- [ ] All user feedback is visible directly in the browser; the code does not use print() or console.log() for information meant for the user.
-- [ ] The application handles input safely and does not generate error messages even if the user enters incorrect input.
+This is a web application that allows users to seamlessly search, book, and manage workspace reservations (like Private rooms , OpenAir or Coworker spaces). It features user authentication, a dynamic search filter, and a dashboard to modify or cancel upcoming bookings.
+
+The application implements an advanced backend validation logic (using datetime operations) to prevent time slot overlaps and past-date bookings, combined with a synchronized frontend experience utilizing JavaScript's DOM manipulation and localStorage to preserve user preferences across page reloads.
+
+## Prerequisites
+
+ Needs to install 
+
+* Flask (install via `pip install Flask`)
+
+## Project Checklist
+
+- [x] It is available on GitHub.
+
+- [x] It uses the Flask web framework.
+
+- [x] It uses at least one module from the Python Standard Library other than the random module.
+Module name: `datetime`, `json`, and `os`
+
+- [x] It contains at least one class written by you that has both properties and methods. 
+File name for the class definition: `app.py`
+Line number(s) for the class definition: 10
+Name of two properties: `self.bookings_file` and `self.users_file`
+Name of two methods: `save_booking()` and `update_booking()`
+File name and line numbers where the methods are used: `app.py`, instantiated at line 46 (`manager = WorkspaceManager(...)`), and methods used at line 102 (`manager.register_user`), line 143 (`manager.get_bookings()`), and line 171 (`manager.save_booking`).
+
+- [x] It makes use of JavaScript in the front end and uses the localStorage of the web browser.
+
+- [x] It uses modern JavaScript (for example, let and const rather than var).
+
+- [x] It makes use of the reading and writing to the same file feature.
+
+- [x] It contains conditional statements.
+File name: `app.py`
+Line number(s): 15 (`if not os.path.exists(self.bookings_file):`) and 86 (`if 'user' in session:`)
+
+- [x] It contains loops. 
+File name: `app.py`
+Line number(s): 26 (`for user in users:`) and 146 (`for room in all_rooms:`)
+
+- [x] It lets the user enter a value in a text box at some point. This value is received and processed by your back end Python code.
+
+- [x] It doesn't generate any error message even if the user enters a wrong input.
+
+- [x] It is styled using your own CSS.
+
+- [x] The code follows the code and style conventions as introduced in the course, is fully documented using comments and doesn't contain unused or experimental code. In particular, the code should not use `print()` or `console.log()` for any information the app user should see. Instead, all user feedback needs to be visible in the browser.
+
+- [x] All exercises have been completed as per the requirements and pushed to the respective GitHub repository.
