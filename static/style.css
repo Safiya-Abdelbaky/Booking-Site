@@ -57,12 +57,7 @@ body {
     text-align: center;
     margin: 20px 0;
 }
-/* ووووو */
-.subtitle-text {
-    color: #64748b;
-    font-size: 18px;
-    margin-top: 10px;
-}
+
 
 /*Buttons */
 .auth-buttons {
@@ -168,12 +163,6 @@ body {
     margin-bottom: 8px;
     font-weight: 600;
 }
-/* زز */
-.full-width {
-    width: 100%;
-    margin-bottom: 20px;
-}
-
 
 /*Login Specific Utilities */
    

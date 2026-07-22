@@ -59,8 +59,8 @@ class WorkspaceManager:
         bookings = self.get_bookings()
         
         new_booking = {
-            # Using minutes and seconds as a simple unique ID
-            "id": datetime.now().strftime("%M%S"),
+            # Using minutes and seconds hours,m,Y to ensure uniqueness in case of rapid bookings
+            "id": datetime.now().strftime("%Y%m%d%H%M%S"),
             "name": name,
             "room": room_type,
             "date": date,
