@@ -24,7 +24,7 @@ File name for the class definition: `app.py`
 Line number(s) for the class definition: 10
 Name of two properties: `self.bookings_file` and `self.users_file`
 Name of two methods: `save_booking()` and `update_booking()`
-File name and line numbers where the methods are used: `app.py`, instantiated at line 46 (`manager = WorkspaceManager(...)`), and methods used at line 102 (`manager.register_user`), line 143 (`manager.get_bookings()`), and line 171 (`manager.save_booking`).
+File name and line numbers where the methods are used: `app.py`, instantiated at line 98 (`manager = WorkspaceManager(...)`), and methods used at line 181 (`manager.register_user`), line 222 (`manager.get_bookings()`), and line 268 (`manager.save_booking`).
 
 - [x] It makes use of JavaScript in the front end and uses the localStorage of the web browser.
 
@@ -34,11 +34,11 @@ File name and line numbers where the methods are used: `app.py`, instantiated at
 
 - [x] It contains conditional statements.
 File name: `app.py`
-Line number(s): 15 (`if not os.path.exists(self.bookings_file):`) and 86 (`if 'user' in session:`)
+Line number(s): 19 (`if not os.path.exists(self.bookings_file):`) and 165 (`if 'user' in session:`)
 
 - [x] It contains loops. 
 File name: `app.py`
-Line number(s): 26 (`for user in users:`) and 146 (`for room in all_rooms:`)
+Line number(s): 38 (`for user in users:`) and 226 (`for room in all_rooms:`)
 
 - [x] It lets the user enter a value in a text box at some point. This value is received and processed by your back end Python code.
 
